@@ -13,8 +13,8 @@ showLabel(infoLabel)
 
 class World():
     def __init__(self):
-        self.blocks = [([300,400],[870,831]),([1113,375],[1329,759])]
-        self.mapimage = makeSprite("map.png")
+        self.blocks = [([575,101],[1050,100]),([575,101],[818,591])]
+        self.mapimage = makeSprite("preview.png")
         self.mapwidth = 2000
         self.mapheight = 2000
         showSprite(self.mapimage)
@@ -72,18 +72,19 @@ class Player():
         self.x = 200
         self.y = 200
         self.sprite = makeSprite("chef150.png",8)
+        self.speed = 10
     
     def update(self, world):
         newx = self.x
         newy = self.y
         if keyPressed("left"):
-            newx=self.x-5
+            newx=self.x-self.speed
         if keyPressed("right"):
-            newx=self.x+5
+            newx=self.x+self.speed
         if keyPressed("up"):
-            newy=self.y-5
+            newy=self.y-self.speed
         if keyPressed("down"):
-            newy=self.y+5
+            newy=self.y+self.speed
         # see if collided with blocks in world
         if not world.checkCollision(newx,newy):
             self.x = newx
@@ -106,6 +107,7 @@ while True:
     w.draw(p)
     p.update(w)
     p.draw()
+    changeLabel(infoLabel,str(p.x) + ":" + str(p.y))
 
     updateDisplay()
     tick(60)
