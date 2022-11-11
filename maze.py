@@ -1,4 +1,3 @@
-from multiprocessing.util import info
 from tkinter import W
 from pygame_functions import *
 
@@ -13,21 +12,26 @@ showLabel(infoLabel)
 
 class World():
     def __init__(self):
-        self.blocks = [([575,101],[1050,100]),([575,101],[818,591])]
+        self.blocks = [([575,105],[1010,340]),([575,105],[818,591]),([1100,110],[1730,360]), ([350,270],[570,380]),([575,630], [820,1150]), ([830,810],[1040,910])]
+        self.blocks += [([940,930],[1540,1150]),([1270,30],[1550,820]),([1270,1280],[1710,1540]),([1480,1550],[1710,1800])]
         self.mapimage = makeSprite("preview.png")
         self.mapwidth = 2000
         self.mapheight = 2000
         showSprite(self.mapimage)
         self.interactables = []
+        self.debugBlocks = False
 
     def draw(self, player):
         # Draw the blocks
-        moveSprite(self.mapimage,centrex-player.x, centrey-player.y)
-        for block in self.blocks:
-            topleftx = centrex + block[0][0]-player.x
-            toplefty = centrey + block[0][1]-player.y
-            drawRect(topleftx, toplefty, block[1][0]-block[0][0], block[1][1]-block[0][1], "black")
-        #Draw Interactables
+        if self.debugBlocks:
+            hideSprite(self.mapimage)
+            for block in self.blocks:
+                topleftx = centrex + block[0][0]-player.x
+                toplefty = centrey + block[0][1]-player.y
+                drawRect(topleftx, toplefty, block[1][0]-block[0][0], block[1][1]-block[0][1], "black")
+        else:
+            moveSprite(self.mapimage,centrex-player.x, centrey-player.y)
+                #Draw Interactables
         for i in self.interactables:
             i.draw(player)
 
@@ -103,7 +107,8 @@ w = World()
 w.addInteractable(Interactable(500,800,"chest.png",w))
 
 while True:
-    clearShapes()
+    if w.debugBlocks:
+        clearShapes()
     w.draw(p)
     p.update(w)
     p.draw()
